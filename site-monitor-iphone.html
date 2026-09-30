@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Site Monitor">
+<title>Site Monitor</title>
+<style>
+:root{--bg:#f2f2f7;--card:#fff;--text:#111;--muted:#777;--line:#e5e5ea;--green:#34c759;--red:#ff3b30;--blue:#007aff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif}
+.app{max-width:680px;margin:auto;padding:calc(16px + env(safe-area-inset-top)) 14px calc(28px + env(safe-area-inset-bottom))}
+.header{display:flex;align-items:center;justify-content:space-between;margin:4px 4px 16px}
+h1{font-size:27px;margin:0;font-weight:800}
+.badge{font-size:12px;font-weight:700;padding:7px 10px;border-radius:999px;background:#e5e5ea;color:#555}
+.card{background:var(--card);border-radius:18px;padding:16px;margin:0 0 14px;box-shadow:0 1px 4px #0000000d}
+.status{display:flex;align-items:center;gap:10px;font-weight:750}
+.dot{width:13px;height:13px;border-radius:50%;background:#8e8e93}
+.dot.on{background:var(--green);box-shadow:0 0 0 4px #34c75922}
+.dot.off{background:var(--red)}
+.small{font-size:12px;color:var(--muted)}
+label{display:block;font-size:13px;color:#666;font-weight:600;margin:14px 0 6px}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 13px;font:inherit;font-size:15px;background:#fafafa;outline:none}
+input:focus,textarea:focus{border-color:#9ecaff;background:#fff}
+textarea{min-height:76px;resize:vertical}
+.row{display:flex;gap:10px}
+button{border:0;border-radius:13px;padding:13px 12px;font:inherit;font-size:15px;font-weight:750;min-height:48px;flex:1}
+button:active{transform:scale(.98);opacity:.85}
+.start{background:var(--green);color:#fff}.stop{background:var(--red);color:#fff}.blue{background:var(--blue);color:#fff}.gray{background:#e5e5ea;color:#111}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.box{background:var(--bg);border-radius:13px;padding:12px;min-height:70px}
+.box .t{font-size:12px;color:var(--muted)}.box .v{margin-top:5px;font-weight:750;word-break:break-word}
+.sectionTitle{font-weight:750;margin-bottom:11px}
+.log{height:280px;background:#101010;color:#e9e9e9;border-radius:13px;padding:12px;overflow:auto;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap}
+.log .ok{color:#72e89a}.log .err{color:#ff6b61}.log .info{color:#d7d7d7}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,20px);opacity:0;background:#222;color:#fff;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:700;pointer-events:none;transition:.2s;z-index:10}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>Site Monitor</h1>
+    <div id="modeBadge" class="badge">iPhone側のみ</div>
+  </div>
+
+  <div class="card">
+    <div class="status">
+      <div id="dot" class="dot off"></div>
+      <div>
+        <div id="statusText">停止中</div>
+        <div id="statusSub" class="small">監視エンジン未接続</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sectionTitle">監視設定</div>
+
+    <label for="url">監視URL</label>
+    <input id="url" type="url" placeholder="https://example.com">
+
+    <label for="interval">監視間隔（秒）</label>
+    <input id="interval" type="number" min="0.5" step="0.1" value="5">
+
+    <label for="webhook">Discord Webhook</label>
+    <input id="webhook" type="text" placeholder="後から設定できます">
+
+    <label for="inKeywords">INキーワード（1行1個）</label>
+    <textarea id="inKeywords" placeholder="在庫あり&#10;購入する&#10;カートに入れる"></textarea>
+
+    <label for="outKeywords">OUTキーワード（1行1個）</label>
+    <textarea id="outKeywords" placeholder="SOLD OUT&#10;完売&#10;在庫切れ"></textarea>
+
+    <label for="queueKeywords">Queueキーワード（1行1個）</label>
+    <textarea id="queueKeywords" placeholder="Waiting Room&#10;Queue-it&#10;待機室"></textarea>
+
+    <label for="errorKeywords">エラーキーワード（1行1個）</label>
+    <textarea id="errorKeywords" placeholder="403&#10;404&#10;500&#10;Access Denied"></textarea>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <button id="startBtn" class="start" onclick="startUI()">▶ 開始</button>
+      <button id="stopBtn" class="stop" onclick="stopUI()">■ 停止</button>
+    </div>
+    <div style="height:10px"></div>
+    <div class="row">
+      <button class="gray" onclick="saveSettings()">💾 設定保存</button>
+      <button class="blue" onclick="testDiscord()">🔔 Discordテスト</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sectionTitle">状態</div>
+    <div class="grid">
+      <div class="box"><div class="t">現在状態</div><div id="current" class="v">未確認</div></div>
+      <div class="box"><div class="t">チェック回数</div><div id="count" class="v">0</div></div>
+      <div class="box"><div class="t">最終チェック</div><div id="last" class="v">---</div></div>
+      <div class="box"><div class="t">次回チェック</div><div id="next" class="v">---</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sectionTitle">📋 ログ</div>
+    <div id="log" class="log"></div>
+    <div style="height:10px"></div>
+    <button class="gray" onclick="clearLog()">ログを消去</button>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY="siteMonitor_ui_v1";
+let running=false, timer=null, count=0;
+
+const $=id=>document.getElementById(id);
+function now(){return new Date().toLocaleTimeString("ja-JP",{hour12:false});}
+function toast(msg){
+  const t=$("toast");t.textContent=msg;t.classList.add("show");
+  clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1600);
+}
+function addLog(msg,cls="info"){
+  const d=document.createElement("div");
+  d.className=cls;d.textContent=`[${now()}] ${msg}`;
+  $("log").appendChild(d);$("log").scrollTop=$("log").scrollHeight;
+}
+function setStatus(on){
+  $("dot").className="dot "+(on?"on":"off");
+  $("statusText").textContent=on?"監視中":"停止中";
+  $("statusSub").textContent=on?"iPhone側UIは稼働中":"監視エンジン未接続";
+}
+function getSettings(){
+  return {
+    url:$("url").value.trim(),
+    interval:$("interval").value,
+    webhook:$("webhook").value.trim(),
+    inKeywords:$("inKeywords").value,
+    outKeywords:$("outKeywords").value,
+    queueKeywords:$("queueKeywords").value,
+    errorKeywords:$("errorKeywords").value
+  };
+}
+function saveSettings(show=true){
+  localStorage.setItem(KEY,JSON.stringify(getSettings()));
+  addLog("設定を保存しました","ok");
+  if(show)toast("設定を保存しました");
+}
+function loadSettings(){
+  try{
+    const d=JSON.parse(localStorage.getItem(KEY)||"null");
+    if(!d)return;
+    $("url").value=d.url||"";
+    $("interval").value=d.interval||5;
+    $("webhook").value=d.webhook||"";
+    $("inKeywords").value=d.inKeywords||"";
+    $("outKeywords").value=d.outKeywords||"";
+    $("queueKeywords").value=d.queueKeywords||"";
+    $("errorKeywords").value=d.errorKeywords||"";
+    addLog("保存済み設定を読み込みました");
+  }catch(e){addLog("設定の読み込みに失敗しました","err")}
+}
+function startUI(){
+  if(running)return;
+  running=true;setStatus(true);saveSettings(false);
+  addLog("監視を開始しました","ok");
+  toast("開始しました");
+  scheduleUI();
+}
+function stopUI(){
+  running=false;
+  if(timer){clearTimeout(timer);timer=null}
+  $("next").textContent="停止";
+  setStatus(false);
+  addLog("監視を停止しました");
+  toast("停止しました");
+}
+function scheduleUI(){
+  if(!running)return;
+  const sec=Math.max(.5,Number($("interval").value)||5);
+  $("next").textContent=sec+" 秒後";
+  timer=setTimeout(()=>{
+    count++;
+    $("count").textContent=count;
+    $("last").textContent=now();
+    $("current").textContent="サーバー未接続";
+    addLog("UIチェック #"+count+"（Windowsサーバー未接続）");
+    scheduleUI();
+  },sec*1000);
+}
+async function testDiscord(){
+  const url=$("webhook").value.trim();
+  if(!url){addLog("Webhookが未入力です","err");toast("Webhookを入力してください");return}
+  if(!/^https:\/\/(discord\.com|discordapp\.com)\//i.test(url)){
+    addLog("Discord Webhook URLではありません","err");toast("Webhook URLを確認してください");return
+  }
+  addLog("Discordテスト送信を開始");
+  try{
+    const r=await fetch(url,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({content:"🔔 Site Monitor テスト通知"})
+    });
+    if(r.ok){addLog("Discordテスト送信成功","ok");toast("Discord送信成功")}
+    else{addLog("Discord送信失敗 HTTP "+r.status,"err");toast("Discord送信失敗")}
+  }catch(e){
+    addLog("Discord送信エラー（iPhone側の通信制限等）","err");
+    toast("送信できませんでした");
+  }
+}
+function clearLog(){
+  $("log").innerHTML="";
+  addLog("ログを消去しました");
+}
+loadSettings();
+setStatus(false);
+</script>
+</body>
+</html>
