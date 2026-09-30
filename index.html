@@ -6,7 +6,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Site Monitor">
-
 <title>Site Monitor</title>
 
 <style>
@@ -20,33 +19,14 @@
   --red:#ff3b30;
   --blue:#007aff;
 }
-
-*{
-  box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Text",
-    "Helvetica Neue",
-    sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif
 }
-
-/* =========================
-   共通
-========================= */
-
-button,
-input,
-textarea{
-  font-family:inherit;
-}
-
+button,input,textarea{font-family:inherit}
 button{
   border:0;
   border-radius:13px;
@@ -54,40 +34,25 @@ button{
   font-size:15px;
   font-weight:750;
   min-height:48px;
-  cursor:pointer;
+  cursor:pointer
 }
-
-button:active{
-  transform:scale(.98);
-  opacity:.85;
-}
-
-input,
-textarea{
+button:active{transform:scale(.98);opacity:.85}
+input,textarea{
   width:100%;
   border:1px solid var(--line);
   border-radius:12px;
   padding:12px 13px;
   font-size:15px;
   background:#fafafa;
-  outline:none;
+  outline:none
 }
-
-input:focus,
-textarea:focus{
+input:focus,textarea:focus{
   border-color:#9ecaff;
-  background:#fff;
+  background:#fff
 }
+textarea{min-height:76px;resize:vertical}
 
-textarea{
-  min-height:76px;
-  resize:vertical;
-}
-
-/* =========================
-   Key認証画面
-========================= */
-
+/* 認証画面 */
 #authScreen{
   min-height:100vh;
   display:flex;
@@ -96,18 +61,16 @@ textarea{
   padding:
     calc(20px + env(safe-area-inset-top))
     18px
-    calc(20px + env(safe-area-inset-bottom));
+    calc(20px + env(safe-area-inset-bottom))
 }
-
 .authBox{
   width:100%;
   max-width:430px;
   background:#fff;
   border-radius:24px;
   padding:26px 20px;
-  box-shadow:0 8px 35px #00000012;
+  box-shadow:0 8px 35px #00000012
 }
-
 .authLogo{
   width:64px;
   height:64px;
@@ -118,201 +81,162 @@ textarea{
   align-items:center;
   justify-content:center;
   font-size:30px;
-  margin:0 auto 18px;
+  margin:0 auto 18px
 }
-
 .authTitle{
   text-align:center;
   font-size:27px;
   font-weight:800;
-  margin-bottom:7px;
+  margin-bottom:7px
 }
-
 .authSub{
   text-align:center;
   color:var(--muted);
   font-size:14px;
   line-height:1.5;
-  margin-bottom:25px;
+  margin-bottom:25px
 }
-
 .authLabel{
   display:block;
   font-size:13px;
   color:#666;
   font-weight:700;
-  margin-bottom:7px;
+  margin-bottom:7px
 }
-
 #accessKey{
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    monospace;
-  letter-spacing:.2px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:.2px
 }
-
 .authButton{
   width:100%;
   margin-top:14px;
   background:var(--blue);
-  color:#fff;
+  color:#fff
 }
-
 .authError{
   min-height:20px;
   color:var(--red);
   font-size:13px;
   font-weight:700;
   text-align:center;
-  margin-top:12px;
+  margin-top:12px
 }
-
 .authInfo{
   text-align:center;
   color:#999;
   font-size:11px;
-  margin-top:22px;
+  margin-top:22px
 }
 
-/* =========================
-   メイン
-========================= */
-
-#mainApp{
-  display:none;
-}
-
+/* メイン */
+#mainApp{display:none}
 .app{
   max-width:680px;
   margin:auto;
   padding:
     calc(16px + env(safe-area-inset-top))
     14px
-    calc(28px + env(safe-area-inset-bottom));
+    calc(28px + env(safe-area-inset-bottom))
 }
-
 .header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin:4px 4px 16px;
+  margin:4px 4px 16px
 }
-
 h1{
   font-size:27px;
   margin:0;
-  font-weight:800;
+  font-weight:800
 }
-
 .badge{
   font-size:12px;
   font-weight:700;
   padding:7px 10px;
   border-radius:999px;
   background:#e5e5ea;
-  color:#555;
+  color:#555
 }
-
 .card{
   background:var(--card);
   border-radius:18px;
   padding:16px;
   margin:0 0 14px;
-  box-shadow:0 1px 4px #0000000d;
+  box-shadow:0 1px 4px #0000000d
 }
-
 .status{
   display:flex;
   align-items:center;
   gap:10px;
-  font-weight:750;
+  font-weight:750
 }
-
 .dot{
   width:13px;
   height:13px;
   border-radius:50%;
-  background:#8e8e93;
+  background:#8e8e93
 }
-
 .dot.on{
   background:var(--green);
-  box-shadow:0 0 0 4px #34c75922;
+  box-shadow:0 0 0 4px #34c75922
 }
-
-.dot.off{
-  background:var(--red);
-}
-
+.dot.off{background:var(--red)}
 .small{
   font-size:12px;
-  color:var(--muted);
+  color:var(--muted)
 }
-
 label{
   display:block;
   font-size:13px;
   color:#666;
   font-weight:600;
-  margin:14px 0 6px;
+  margin:14px 0 6px
 }
-
 .row{
   display:flex;
-  gap:10px;
+  gap:10px
 }
-
+.row button{flex:1}
 .start{
   background:var(--green);
-  color:#fff;
+  color:#fff
 }
-
 .stop{
   background:var(--red);
-  color:#fff;
+  color:#fff
 }
-
 .blue{
   background:var(--blue);
-  color:#fff;
+  color:#fff
 }
-
 .gray{
   background:#e5e5ea;
-  color:#111;
+  color:#111
 }
-
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
+  gap:10px
 }
-
 .box{
   background:var(--bg);
   border-radius:13px;
   padding:12px;
-  min-height:70px;
+  min-height:70px
 }
-
 .box .t{
   font-size:12px;
-  color:var(--muted);
+  color:var(--muted)
 }
-
 .box .v{
   margin-top:5px;
   font-weight:750;
-  word-break:break-word;
+  word-break:break-word
 }
-
 .sectionTitle{
   font-weight:750;
-  margin-bottom:11px;
+  margin-bottom:11px
 }
-
 .log{
   height:280px;
   background:#101010;
@@ -320,27 +244,18 @@ label{
   border-radius:13px;
   padding:12px;
   overflow:auto;
-  font:
-    12px/1.55
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    monospace;
-  white-space:pre-wrap;
+  font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;
+  white-space:pre-wrap
 }
-
-.log .ok{
-  color:#72e89a;
+.log .ok{color:#72e89a}
+.log .err{color:#ff6b61}
+.log .info{color:#d7d7d7}
+.logout{
+  width:100%;
+  margin-top:10px;
+  background:#e5e5ea;
+  color:#111
 }
-
-.log .err{
-  color:#ff6b61;
-}
-
-.log .info{
-  color:#d7d7d7;
-}
-
 .toast{
   position:fixed;
   left:50%;
@@ -355,42 +270,26 @@ label{
   font-weight:700;
   pointer-events:none;
   transition:.2s;
-  z-index:10;
+  z-index:10
 }
-
 .toast.show{
   opacity:1;
-  transform:translate(-50%,0);
-}
-
-.logout{
-  width:100%;
-  margin-top:10px;
-  background:#e5e5ea;
-  color:#111;
-}
-
-hr{
-  border:0;
-  border-top:1px solid var(--line);
-  margin:16px 0;
+  transform:translate(-50%,0)
 }
 </style>
 </head>
 
 <body>
 
-<!-- =====================================
-     Key認証画面
-===================================== -->
+<!-- =========================
+     利用者Key認証
+========================= -->
 
 <div id="authScreen">
 
   <div class="authBox">
 
-    <div class="authLogo">
-      🔐
-    </div>
+    <div class="authLogo">🔐</div>
 
     <div class="authTitle">
       Site Monitor
@@ -411,6 +310,7 @@ hr{
       autocapitalize="off"
       spellcheck="false"
       placeholder="key-xxxxxxxx"
+      onkeydown="if(event.key==='Enter')login()"
     >
 
     <button
@@ -420,10 +320,7 @@ hr{
       🔑 接続
     </button>
 
-    <div
-      id="authError"
-      class="authError"
-    ></div>
+    <div id="authError" class="authError"></div>
 
     <div class="authInfo">
       Site Monitor
@@ -434,9 +331,9 @@ hr{
 </div>
 
 
-<!-- =====================================
-     メインアプリ
-===================================== -->
+<!-- =========================
+     Site Monitor本体
+========================= -->
 
 <div id="mainApp">
 
@@ -453,16 +350,11 @@ hr{
   </div>
 
 
-  <!-- ステータス -->
-
   <div class="card">
 
     <div class="status">
 
-      <div
-        id="dot"
-        class="dot off"
-      ></div>
+      <div id="dot" class="dot off"></div>
 
       <div>
 
@@ -470,10 +362,7 @@ hr{
           停止中
         </div>
 
-        <div
-          id="statusSub"
-          class="small"
-        >
+        <div id="statusSub" class="small">
           監視エンジン未接続
         </div>
 
@@ -483,8 +372,6 @@ hr{
 
   </div>
 
-
-  <!-- 監視設定 -->
 
   <div class="card">
 
@@ -570,14 +457,11 @@ hr{
   </div>
 
 
-  <!-- 操作 -->
-
   <div class="card">
 
     <div class="row">
 
       <button
-        id="startBtn"
         class="start"
         onclick="startUI()"
       >
@@ -585,7 +469,6 @@ hr{
       </button>
 
       <button
-        id="stopBtn"
         class="stop"
         onclick="stopUI()"
       >
@@ -594,9 +477,7 @@ hr{
 
     </div>
 
-
     <div style="height:10px"></div>
-
 
     <div class="row">
 
@@ -616,7 +497,6 @@ hr{
 
     </div>
 
-
     <button
       class="logout"
       onclick="logout()"
@@ -627,8 +507,6 @@ hr{
   </div>
 
 
-  <!-- 状態 -->
-
   <div class="card">
 
     <div class="sectionTitle">
@@ -638,66 +516,23 @@ hr{
     <div class="grid">
 
       <div class="box">
-
-        <div class="t">
-          現在状態
-        </div>
-
-        <div
-          id="current"
-          class="v"
-        >
-          未確認
-        </div>
-
+        <div class="t">現在状態</div>
+        <div id="current" class="v">未確認</div>
       </div>
 
-
       <div class="box">
-
-        <div class="t">
-          チェック回数
-        </div>
-
-        <div
-          id="count"
-          class="v"
-        >
-          0
-        </div>
-
+        <div class="t">チェック回数</div>
+        <div id="count" class="v">0</div>
       </div>
 
-
       <div class="box">
-
-        <div class="t">
-          最終チェック
-        </div>
-
-        <div
-          id="last"
-          class="v"
-        >
-          ---
-        </div>
-
+        <div class="t">最終チェック</div>
+        <div id="last" class="v">---</div>
       </div>
 
-
       <div class="box">
-
-        <div class="t">
-          次回チェック
-        </div>
-
-        <div
-          id="next"
-          class="v"
-        >
-          ---
-        </div>
-
+        <div class="t">次回チェック</div>
+        <div id="next" class="v">---</div>
       </div>
 
     </div>
@@ -705,18 +540,13 @@ hr{
   </div>
 
 
-  <!-- ログ -->
-
   <div class="card">
 
     <div class="sectionTitle">
       📋 ログ
     </div>
 
-    <div
-      id="log"
-      class="log"
-    ></div>
+    <div id="log" class="log"></div>
 
     <div style="height:10px"></div>
 
@@ -734,29 +564,21 @@ hr{
 </div>
 
 
-<div
-  id="toast"
-  class="toast"
-></div>
+<div id="toast" class="toast"></div>
 
 
 <script>
 
-/* =====================================================
-   擬似Key認証
-   ※後でサーバー認証に置き換える部分
-===================================================== */
+/* =========================================
+   擬似利用者Key
+   後でサーバー認証に変更する
+========================================= */
 
 const DEMO_USER_KEY =
   "key-demo-site-monitor-001";
 
 const AUTH_KEY =
   "siteMonitor_authenticated_v1";
-
-
-/* =====================================================
-   Site Monitor設定
-===================================================== */
 
 const SETTINGS_KEY =
   "siteMonitor_ui_v2";
@@ -766,13 +588,12 @@ let timer = null;
 let count = 0;
 
 
-/* =====================================================
+/* =========================================
    共通
-===================================================== */
+========================================= */
 
 const $ = id =>
   document.getElementById(id);
-
 
 function now(){
 
@@ -786,37 +607,54 @@ function now(){
 }
 
 
-/* =====================================================
+/* =========================================
    Toast
-===================================================== */
+========================================= */
 
 function toast(msg){
 
-  const t =
-    $("toast");
+  const t = $("toast");
 
-  t.textContent =
-    msg;
+  t.textContent = msg;
 
   t.classList.add("show");
 
-  clearTimeout(
-    window.__toast
-  );
+  clearTimeout(window.__toast);
 
   window.__toast =
     setTimeout(
-      () =>
-        t.classList.remove("show"),
+      () => t.classList.remove("show"),
       1600
     );
 
 }
 
 
-/* =====================================================
+/* =========================================
+   ログ
+========================================= */
+
+function addLog(msg, cls="info"){
+
+  const d =
+    document.createElement("div");
+
+  d.className = cls;
+
+  d.textContent =
+    `[${now()}] ${msg}`;
+
+  $("log").appendChild(d);
+
+  $("log").scrollTop =
+    $("log").scrollHeight;
+
+}
+
+
+/* =========================================
    Keyログイン
-===================================================== */
+========================================= */
 
 function login(){
 
@@ -825,7 +663,6 @@ function login(){
 
   const error =
     $("authError");
-
 
   error.textContent = "";
 
@@ -852,10 +689,6 @@ function login(){
   }
 
 
-  /*
-   * 認証成功
-   */
-
   localStorage.setItem(
     AUTH_KEY,
     "1"
@@ -881,9 +714,9 @@ function login(){
 }
 
 
-/* =====================================================
+/* =========================================
    ログアウト
-===================================================== */
+========================================= */
 
 function logout(){
 
@@ -899,11 +732,9 @@ function logout(){
   $("authScreen").style.display =
     "flex";
 
-  $("accessKey").value =
-    "";
+  $("accessKey").value = "";
 
-  $("authError").textContent =
-    "";
+  $("authError").textContent = "";
 
   toast(
     "ログアウトしました"
@@ -912,9 +743,9 @@ function logout(){
 }
 
 
-/* =====================================================
-   起動時認証チェック
-===================================================== */
+/* =========================================
+   認証状態確認
+========================================= */
 
 function checkAuth(){
 
@@ -945,37 +776,9 @@ function checkAuth(){
 }
 
 
-/* =====================================================
-   ログ
-===================================================== */
-
-function addLog(
-  msg,
-  cls="info"
-){
-
-  const d =
-    document.createElement(
-      "div"
-    );
-
-  d.className =
-    cls;
-
-  d.textContent =
-    `[${now()}] ${msg}`;
-
-  $("log").appendChild(d);
-
-  $("log").scrollTop =
-    $("log").scrollHeight;
-
-}
-
-
-/* =====================================================
+/* =========================================
    ステータス
-===================================================== */
+========================================= */
 
 function setStatus(on){
 
@@ -983,12 +786,8 @@ function setStatus(on){
     "dot " +
     (on ? "on" : "off");
 
-
   $("statusText").textContent =
-    on
-      ? "監視中"
-      : "停止中";
-
+    on ? "監視中" : "停止中";
 
   $("statusSub").textContent =
     on
@@ -998,9 +797,9 @@ function setStatus(on){
 }
 
 
-/* =====================================================
+/* =========================================
    設定取得
-===================================================== */
+========================================= */
 
 function getSettings(){
 
@@ -1032,27 +831,21 @@ function getSettings(){
 }
 
 
-/* =====================================================
+/* =========================================
    設定保存
-===================================================== */
+========================================= */
 
-function saveSettings(
-  show=true
-){
+function saveSettings(show=true){
 
   localStorage.setItem(
     SETTINGS_KEY,
-    JSON.stringify(
-      getSettings()
-    )
+    JSON.stringify(getSettings())
   );
-
 
   addLog(
     "設定を保存しました",
     "ok"
   );
-
 
   if(show){
 
@@ -1065,9 +858,9 @@ function saveSettings(
 }
 
 
-/* =====================================================
+/* =========================================
    設定読み込み
-===================================================== */
+========================================= */
 
 function loadSettings(){
 
@@ -1081,41 +874,29 @@ function loadSettings(){
       );
 
 
-    if(!d)
-      return;
+    if(!d) return;
 
 
     $("url").value =
       d.url || "";
 
-
     $("interval").value =
       d.interval || 5;
-
 
     $("webhook").value =
       d.webhook || "";
 
-
     $("inKeywords").value =
       d.inKeywords || "";
-
 
     $("outKeywords").value =
       d.outKeywords || "";
 
-
     $("queueKeywords").value =
       d.queueKeywords || "";
 
-
     $("errorKeywords").value =
       d.errorKeywords || "";
-
-
-    addLog(
-      "保存済み設定を読み込みました"
-    );
 
 
   }catch(e){
@@ -1130,102 +911,74 @@ function loadSettings(){
 }
 
 
-/* =====================================================
-   UI監視開始
-===================================================== */
+/* =========================================
+   開始
+========================================= */
 
 function startUI(){
 
-  if(running)
-    return;
+  if(running) return;
 
+  running = true;
 
-  running =
-    true;
+  setStatus(true);
 
-
-  setStatus(
-    true
-  );
-
-
-  saveSettings(
-    false
-  );
-
+  saveSettings(false);
 
   addLog(
     "監視を開始しました",
     "ok"
   );
 
-
   toast(
     "開始しました"
   );
-
 
   scheduleUI();
 
 }
 
 
-/* =====================================================
-   UI監視停止
-===================================================== */
+/* =========================================
+   停止
+========================================= */
 
 function stopUI(){
 
-  running =
-    false;
-
+  running = false;
 
   if(timer){
 
-    clearTimeout(
-      timer
-    );
+    clearTimeout(timer);
 
-    timer =
-      null;
+    timer = null;
 
   }
-
 
   $("next").textContent =
     "停止";
 
-
-  setStatus(
-    false
-  );
-
+  setStatus(false);
 
   addLog(
     "監視を停止しました"
   );
 
-
-  toast(
-    "停止しました"
-  );
-
 }
 
 
-/* =====================================================
-   UI監視スケジュール
-===================================================== */
+/* =========================================
+   UI監視
+========================================= */
 
 function scheduleUI(){
 
-  if(!running)
-    return;
+  if(!running) return;
 
 
   const sec =
     Math.max(
-      .5,
+      0.5,
       Number(
         $("interval").value
       ) || 5
@@ -1238,23 +991,18 @@ function scheduleUI(){
 
   timer =
     setTimeout(
-
       () => {
 
         count++;
 
-
         $("count").textContent =
           count;
-
 
         $("last").textContent =
           now();
 
-
         $("current").textContent =
           "サーバー未接続";
-
 
         addLog(
           "UIチェック #" +
@@ -1262,21 +1010,18 @@ function scheduleUI(){
           "（Windowsサーバー未接続）"
         );
 
-
         scheduleUI();
 
       },
-
       sec * 1000
-
     );
 
 }
 
 
-/* =====================================================
+/* =========================================
    Discordテスト
-===================================================== */
+========================================= */
 
 async function testDiscord(){
 
@@ -1301,8 +1046,7 @@ async function testDiscord(){
 
 
   if(
-    !/^https:\/\/(discord\.com|discordapp\.com)\//i
-      .test(url)
+    !/^https:\/\/(discord\.com|discordapp\.com)\//i.test(url)
   ){
 
     addLog(
@@ -1328,25 +1072,19 @@ async function testDiscord(){
 
     const r =
       await fetch(
-
         url,
-
         {
           method:"POST",
-
           headers:{
             "Content-Type":
               "application/json"
           },
-
           body:
             JSON.stringify({
               content:
                 "🔔 Site Monitor テスト通知"
             })
-
         }
-
       );
 
 
@@ -1392,14 +1130,13 @@ async function testDiscord(){
 }
 
 
-/* =====================================================
+/* =========================================
    ログ消去
-===================================================== */
+========================================= */
 
 function clearLog(){
 
-  $("log").innerHTML =
-    "";
+  $("log").innerHTML = "";
 
   addLog(
     "ログを消去しました"
@@ -1408,15 +1145,13 @@ function clearLog(){
 }
 
 
-/* =====================================================
+/* =========================================
    初期化
-===================================================== */
+========================================= */
 
 loadSettings();
 
-setStatus(
-  false
-);
+setStatus(false);
 
 checkAuth();
 
